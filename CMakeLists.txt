@@ -94,9 +94,8 @@ file(GLOB SHADERS ${CMAKE_SOURCE_DIR}/shaders/*.fshader
 #                   )
 
 
-# TODO SOLVE: DOESN'T CREATE NEW FOLDER IF BUILD FOLDER IS EMPTY...
-# TEMPORARY: CREATE FOLDERS MANUALLY...
 # shader files
+file( MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/shaders" ) # ugly solution
 add_custom_command(TARGET Graphics PRE_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/shaders $<TARGET_FILE_DIR:Graphics>/shaders)
