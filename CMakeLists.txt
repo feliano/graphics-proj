@@ -40,6 +40,8 @@ add_executable(Graphics
 	common/shader.cpp
 	common/shader.hpp
 
+	common/Controls.h
+	common/Controls.cpp
 
 	shaders/SimpleFragmentShader.fragmentshader
 	shaders/SimpleVertexShader.vertexshader
@@ -50,6 +52,7 @@ add_executable(Graphics
 	Main.cpp
 	Transform.h
 	Camera.h
+	Camera.cpp
 	Object3D.h
 	Object3D.cpp
 

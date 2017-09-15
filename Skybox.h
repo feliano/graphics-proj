@@ -5,8 +5,5 @@ class Skybox: public Cube{
 
 public:
 	Skybox(): Cube(){}
-
 	
-
-
 };

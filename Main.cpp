@@ -17,6 +17,7 @@
 #include <glm/gtx/quaternion.hpp>
 using namespace glm;
 
+#include <common/Controls.h>
 #include "Camera.h"
 // Include 3d Objects
 #include "Cube.h"
@@ -40,100 +41,66 @@ Object3D obj("objects/sphere.obj");
 FrameBuffer frameBuffer;
 HeightMap heightMap;
 GLuint fb_tex;
-/*
-void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
-}
-*/
 
-void input_handler(){
 
-	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-		glm::vec3 axis = glm::cross(camera.getDir(),camera.getUp());
-		glm::quat myQuaternion;
-		myQuaternion = glm::angleAxis(glm::radians(1.0f),axis);
-		glm::mat4 rotation = glm::mat4_cast(myQuaternion);
-		camera.setDir(glm::mat3(rotation) * camera.getDir());
-
-	}else if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-		glm::vec3 axis = glm::cross(camera.getDir(),camera.getUp());
-		glm::mat4 rotate = glm::rotate(glm::radians(-1.0f), axis);
-		camera.setDir(glm::mat3(rotate) * camera.getDir());
-	}else if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-		glm::mat4 rotate = glm::rotate(glm::radians(1.0f), glm::vec3(0.0f,1.0f,0.0f));
-		camera.setDir(glm::mat3(rotate) * camera.getDir());
-	}else if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-		glm::mat4 rotate = glm::rotate(glm::radians(-1.0f), glm::vec3(0.0f,1.0f,0.0f));
-		camera.setDir(glm::mat3(rotate) * camera.getDir());
-	}else if(glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS){
-		camera.setPos(camera.getPos()-0.1f*camera.getDir());
-		// move skybox along with camera
-		sky.getTransform().translate(-0.1f*camera.getDir());
-
-	}else if(glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS){
-		camera.setPos(camera.getPos()+0.1f*camera.getDir());
-		// move skybox along with camera
-		sky.getTransform().translate(0.1f*camera.getDir());
-
-	}else if(glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
-		camera.setFOV(camera.getFOV() + 0.01f);
-	}else if(glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS){
-		camera.setFOV(camera.getFOV() - 0.01f);
-	}else if(glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS){
-		// Turn on wireframe rendering
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-	}else if(glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS){
-		// Turn off wireframe rendering
-		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-	}
+void input_handler(Camera* camera){
 
 	if(glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS){
 		heightMap.UpdateNumberOfOctaves(1);
-	}else if(glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS){
+	}
+
+	if(glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS){
 		heightMap.UpdateNumberOfOctaves(-1);
 	}
 
-
 	if(glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS){
 		heightMap.UpdateNumberOfTiles(0.1f);
-	}else if(glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS){
+	}
+	
+	if(glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS){
 		heightMap.UpdateNumberOfTiles(-0.1f);
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS){
 		heightMap.UpdateFractalAmplitude(0.1f);
-	}else if(glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
+	}
+	if(glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS){
 		heightMap.UpdateFractalAmplitude(-0.1f);
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS){
 		heightMap.UseFractalAlgorithm(0);
-	}else if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS){
+	}
+	
+	if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS){
 		heightMap.UseFractalAlgorithm(1);
-	}else if(glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS){
+	}
+
+	if(glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS){
 		heightMap.UseFractalAlgorithm(2);
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS){
 		heightMap.UpdateGain(0.1f);
-	}else if(glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS){
+	}
+	
+	if(glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS){
 		heightMap.UpdateGain(-0.1f);
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS){
 		heightMap.UpdateOffset(0.1f);
-	}else if(glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS){
+	}
+	
+	if(glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS){
 		heightMap.UpdateOffset(-0.1f);
 	}
-
 }
 
 void init(){
-		// Initialise GLFW
-	if( !glfwInit() )
-	{
+
+	// Initialise GLFW
+	if( !glfwInit() ){
 		fprintf( stderr, "Failed to initialize GLFW\n" );
 		getchar();
 	}
@@ -167,7 +134,7 @@ void init(){
 
 	// enable depth test
 	glEnable(GL_DEPTH_TEST);
-	// accept fragment closest to camera
+	// accept fragment closest to camera	
 	glDepthFunc(GL_LESS);
 
     //glfwSetKeyCallback(window, KeyCallback);
@@ -197,7 +164,6 @@ void init(){
 	quad.bindHeightMap(fb_tex);
 
 	// model matrix
-
 	terrain.getTransform().rotate(90.0f,glm::vec3(1.0f,0.0f,0.0f));
 	terrain.getTransform().scale(20.0f,20.0f,20.0f);
 
@@ -223,8 +189,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset){
 }
 
 
-int main( void )
-{
+int main( void ) {
+	
 	// init stuff
 	init();
 
@@ -236,10 +202,6 @@ int main( void )
 	std::cout << "uniform comps: " << test << std::endl;
 	std::cout << "uniform vecs: " << vecs << std::endl;
 
-    // set the mouse press and position callback
-    //glfwSetMouseButtonCallback(window, MouseButton);
-    //glfwSetCursorPosCallback(window, MousePos);
-
 	glfwSetScrollCallback(window, scroll_callback);
 
 	do{
@@ -247,7 +209,9 @@ int main( void )
 		// Clear the screen.
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glMatrixMode (GL_PROJECTION);
-		input_handler();
+		input_handler(window,&camera,&sky);
+		input_handler(&camera);
+
 
 		// update heightmap
 		frameBuffer.Bind();
@@ -255,7 +219,6 @@ int main( void )
 		heightMap.Draw(); // rendering to framebuffers texture
 		frameBuffer.Unbind();
 
-		//std::cout << "time: " << glfwGetTime() << std::endl;
 		// Draw all the objects
 		//quad.draw(glm::mat4(1.0f),glfwGetTime()); // Debug visualize heightmap
 		sky.draw(camera.getViewProjectionMatrix());
@@ -268,12 +231,10 @@ int main( void )
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 
-	} 
-	// Check if ESC key was pressed or the window was closed
-	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+	}while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 		   glfwWindowShouldClose(window) == 0 );
 
-	// Close OpenGL window and terminate GLFW
+	// free memory and close
 	glfwTerminate();
 
 	return 0;
