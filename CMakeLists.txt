@@ -19,7 +19,7 @@ endif()
 add_subdirectory (libs)
 
 include_directories(
-	libs/glfw-3.1.2/include/GLFW/
+	libs/glfw-3.2.1/include/GLFW/
 	libs/glm-0.9.7.1/
 	libs/glew-1.13.0/include/
 	.
