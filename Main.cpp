@@ -32,6 +32,11 @@ using namespace glm;
 // Include common methods for loading shaders
 #include <common/shader.hpp>
 
+// open asset import library
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
+
 GLFWwindow* window;
 Camera camera;
 Terrain terrain;
@@ -98,6 +103,30 @@ void input_handler(Camera* camera){
 }
 
 void init(){
+
+	std::string pFile = "objects/sphere.obj";
+
+	/*
+	Assimp::Importer importer;
+
+
+	const aiScene* scene = importer.ReadFile( pFile, 
+	aiProcess_CalcTangentSpace       | 
+	aiProcess_Triangulate            |
+	aiProcess_JoinIdenticalVertices  |
+	aiProcess_SortByPType);	
+
+	aiMesh* mesh = scene->mMeshes[0];
+	aiVector3D* vertices = mesh->mVertices;
+	
+	std::cout << "meshes: "<< scene->mNumMeshes << std::endl;
+	std::cout << "vertices: "<< mesh->mNumVertices << std::endl;
+
+	std::cout << "x,y,z: " << (*vertices++).x << std::endl;
+	*/
+
+	// free up the memory used during import 
+	//Assimp::aiReleaseImport(scene);
 
 	// Initialise GLFW
 	if( !glfwInit() ){
