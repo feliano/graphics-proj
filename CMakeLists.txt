@@ -58,6 +58,8 @@ add_executable(Graphics
 
 	Cube.h
 	Cube.cpp
+	Particles.h
+	Particles.cpp
 	Skybox.h
 	Grid.h
 	Grid.cpp

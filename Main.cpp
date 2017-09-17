@@ -22,6 +22,7 @@ using namespace glm;
 // Include 3d Objects
 #include "Cube.h"
 #include "Grid.h"
+#include "Particles.h"
 #include "Terrain.h"
 #include "Skybox.h"
 #include "HeightMap.h"
@@ -46,7 +47,7 @@ Object3D obj("objects/sphere.obj");
 FrameBuffer frameBuffer;
 HeightMap heightMap;
 GLuint fb_tex;
-
+Particles particles;
 
 void input_handler(Camera* camera){
 
@@ -176,6 +177,9 @@ void init(){
 	sky.init();
 	terrain.init();
 
+	particles.init();
+
+
 	fb_tex = frameBuffer.Init(1024,768); // actually should be image_width & size
 	GLuint temp; 
 	heightMap.Init(1024,768,temp);
@@ -188,7 +192,7 @@ void init(){
 	frameBuffer.Unbind();
 	
 	terrain.addTexture("textures/crate.png");
-	terrain.addTexture("textures/ground.png");
+	terrain.addTexture("textures/snow.png");
 	terrain.bindHeightMap(fb_tex);
 	quad.bindHeightMap(fb_tex);
 
@@ -196,7 +200,7 @@ void init(){
 	terrain.getTransform().rotate(90.0f,glm::vec3(1.0f,0.0f,0.0f));
 	terrain.getTransform().scale(20.0f,20.0f,20.0f);
 
-	sky.getTransform().scale(20.0f,20.0f,20.0f);
+	sky.getTransform().scale(50.0f,50.0f,50.0f);
 	sky.getTransform().rotate(180.0f,glm::vec3(1.0f,0.0f,0.0f));
 
 	quad.getTransform().rotate(0.0f,glm::vec3(1.0f,0.0f,0.0f));
@@ -256,6 +260,7 @@ int main( void ) {
 		//obj.getTransform().rotate(1.0f,glm::vec3(0.0f,1.0f,0.0f));
 		obj.draw(camera.getViewMatrix(),camera.getProjectionMatrix());
 		//heightMap.Draw();
+		particles.draw(camera.getViewProjectionMatrix());
 		// Swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
